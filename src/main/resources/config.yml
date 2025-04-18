@@ -1,0 +1,20 @@
+# Config file
+
+GappleDrop:
+  prefix: '&8[&6GappleDrop&8]'
+  messages:
+    enable: '&2Plugin has been enabled!'
+    disable: '&aPlugin has been disabled!'
+    invalidCmd: '&cThe executed command is not available!'
+    reloaded: '&2Configuration reloaded'
+    noPerm: '&cYou don''t have enough permissions to do this!'
+  gapple:
+    absorption-time: 5
+    absorption-level: 1
+    regen-time: 10
+    regen-level: 1
+  disabled-worlds:
+    - world_nether
+    - world_the_end
+  miscellaneous:
+    enabled: true

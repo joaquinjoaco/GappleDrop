@@ -1,0 +1,6 @@
+name: GappleDrop
+version: ${version}
+main: org.joaquinjoaco.gappleDrop.GappleDrop
+api-version: 1.21
+author: joaquinjoaco
+description: Drops an enchanted golden apple on player death and applies potion effects on consumption.
