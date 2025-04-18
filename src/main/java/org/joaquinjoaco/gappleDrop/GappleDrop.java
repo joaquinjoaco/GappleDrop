@@ -8,8 +8,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -73,19 +73,28 @@ public class GappleDrop extends JavaPlugin implements Listener {
         if (disabledWorlds.contains(world.getName())) return;
 
         // Drop an enchanted golden apple
-        ItemStack gapple = new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1);
+        ItemStack gapple = new ItemStack(Material.GOLDEN_APPLE, 1);
         world.dropItemNaturally(player.getLocation(), gapple);
     }
 
     @EventHandler
-    public void onPlayerConsume(PlayerItemConsumeEvent event) {
+    public void onEntityPickupItem(EntityPickupItemEvent event) {
         if (!pluginEnabled) return;
 
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
+        // Check if the entity picking up the item is a player
+        if (!(event.getEntity() instanceof Player)) return;
 
-        // Check if the consumed item is an enchanted golden apple
-        if (item.getType() == Material.ENCHANTED_GOLDEN_APPLE) {
+        Player player = (Player) event.getEntity();
+        ItemStack item = event.getItem().getItemStack();
+
+        // Check if the picked-up item is an enchanted golden apple
+        if (item.getType() == Material.GOLDEN_APPLE) {
+            // Cancel the pickup event to prevent the item from going into the inventory
+            event.setCancelled(true);
+
+            // Remove the item from the world
+            event.getItem().remove();
+
             // Apply potion effects
             player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, absorptionTime, absorptionLevel));
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, regenTime, regenLevel));
